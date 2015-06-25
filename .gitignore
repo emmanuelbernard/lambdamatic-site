@@ -1,4 +1,15 @@
 # OS
 .DS_Store
 
-#
+# Ruby
+.rvmrc
+
+# Awestruct
+.awestruct
+.bin
+.bundle
+.sass-cache
+_site
+
+# temp
+todo

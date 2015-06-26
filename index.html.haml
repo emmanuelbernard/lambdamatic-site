@@ -3,25 +3,96 @@ layout: base
 ---
 .row
   .large-12.columns
-    %h1 You're awestruct! 
+    %h1 Lambdamatic
     %hr
-
 .row
   .large-12.columns
-    .panel
-      %h3 Get started
-      %p This site is all setup to use Foundation 4 with Awestruct.
-      %a.button{:href=>'http://foundation.zurb.com'} Check out Foundation 4
-      %a.button.secondary{:href=>'http://awestruct.org'} Check out Awestruct
+    .panel.radius
+      :asciidoc
+        == Write your queries like Java 8 collection streams
 
-.row
-  .large-4.columns
-    %h3 About 
-    %p Awestruct is a framework for creating static HTML sites. It's inspired by the awesome Jekyll utility in the same genre. Additionally, Awestruct integrates technologies such as Compass, Markdown and Haml.
+        [source,java]
+        ----
+        List<Blog> = blogs
+          .filter( blog -> blog.status.equals(PUBLISHED) && blog.author.equals("Xavier") )
+          .toList();
+        ----
+  
+        Lambdamatic exposes databases as *collections of Java objects*.
+        Write *queries* like you write *stream operations* on Java 8 collections.
+        Define the predicates as condition on your actual object properties.
+
+        It does its magic by converting lambdas into an AST of predicates.
+        This AST is then converted into a database query.
+
+        Lambdamatic comes in two incarnations: MongoDB and JPA.
+      .row
+        .large-8.large-offset-2.columns
+          %a.button{:href=>'#mongodb'} Explore Lambdamatic MongoDB
+          %a.button{:href=>'#jpa'} Explore Lambdamatic JPA
+
+.odd
+  .row
+    .large-12.columns
+      #mongodb
+      :asciidoc
+        == Lambdamatic MongoDB
+
+        Lambdamatic MongoDB is an *Object Mapper*.
+        It exposes MongoDB collections as Java collections.
+        Stream operations (filter, map, etc) are converted into server side MongoDB queries.
+
+        [source,java]
+        ----
+        class Blog
+        @Document(collection="blogs")
+        public class Blog {
+
+          @DocumentId
+          private String id;
+
+          @DocumentField
+          private String title;
+
+          @DocumentField
+          private String url;
+
+          @DocumentField
+          private Status status;
+
+          @DocumentField
+          private String author;
+        }
+
+        public enum Status {
+          DRAFT,
+          PUBLISHED
+          DELETED
+        }
+
+        List<Blog> = blogs
+          .filter( blog -> blog.status.equals(PUBLISHED) && blog.author.equals("Xavier") )
+          .toList();
+        ----
+
+        Lambdamatic MongoDB supports the following features:
+
+        * nested documents
+        * collection or arrays of nested documents
+        * geospatial queries
+        * ...
+      %a.button{:href=>'/mongodb/'} More on Lambdamatic MongoDB
+
+.row.even
+  .large-6.columns
+    :asciidoc
+      === About 
+
+      Awestruct is a framework for creating static HTML sites. It's inspired by the awesome Jekyll utility in the same genre. Additionally, Awestruct integrates technologies such as Compass, Markdown and Haml.
     %p
       %a.button{:href=>'http://awestruct.org'} View details &raquo; 
 
-  .large-4.columns
+  .large-6.columns
     %h3 Goal
     %p The goal of Awestruct is to make it trivially easy to bake out non-trivial static websites. In addition to providing template-driven site creation (using Haml), Awestruct provides facilities for easily priming the site creation with additional non-page data.
     %p

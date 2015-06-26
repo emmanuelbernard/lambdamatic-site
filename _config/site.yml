@@ -2,3 +2,15 @@ name: Lambdamatic
 title: Lambdamatic
 org: Xavier Coulon
 base_url: ''
+
+asciidoctor:
+  :safe: safe
+  :attributes:
+    idprefix: ''
+    idseparator: '-'
+    sectanchors: ''
+    toclevels: 3
+    icons: font
+    source-highlighter: coderay
+    coderay-css: style
+

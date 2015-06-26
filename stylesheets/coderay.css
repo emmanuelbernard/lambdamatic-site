@@ -2,9 +2,12 @@
   background-color: hsl(0,0%,95%);
   border: 1px solid silver;
   color: black;
+  font-size: 85%;
 }
-.CodeRay pre {
+
+pre.CodeRay {
   margin: 0px;
+  padding: 10px;
 }
 
 span.CodeRay { white-space: pre; border: 0px; padding: 2px; }

@@ -9,7 +9,7 @@ layout: base
   .large-12.columns
     .panel.radius
       :asciidoc
-        == Write your queries like Java 8 collection streams
+        == Write type-safe queries like Java 8 collection streams
 
         [source,java]
         ----
@@ -84,22 +84,17 @@ layout: base
       %a.button{:href=>'/mongodb/'} More on Lambdamatic MongoDB
 
 .row.even
-  .large-6.columns
+  .large-12.columns
     :asciidoc
-      === About 
+      === Lambdamatic JPA
 
-      Awestruct is a framework for creating static HTML sites. It's inspired by the awesome Jekyll utility in the same genre. Additionally, Awestruct integrates technologies such as Compass, Markdown and Haml.
-    %p
-      %a.button{:href=>'http://awestruct.org'} View details &raquo; 
+      Lambdamatic JPA is a new way of writing JPA queries.
+      Write Java 8 stream-like *code* and let Lambdamatic JPA convert this code into JPA queries.
 
-  .large-6.columns
-    %h3 Goal
-    %p The goal of Awestruct is to make it trivially easy to bake out non-trivial static websites. In addition to providing template-driven site creation (using Haml), Awestruct provides facilities for easily priming the site creation with additional non-page data.
-    %p
-      %a.button{:href=>'http://awestruct.org'} View details &raquo; 
+      [WARNING]
+      ====
+      this module is a work in progress.
+      The code is your friend at this stage.
+      ====
 
-  .large-4.columns
-    %h3 Concept
-    %p The core concept of Awestruct is that of structures, specifically Ruby OpenStruct structures. The struct aspect allows arbitrary, schema-less data to be associated with a specific page or the entire site.
-    %p
-      %a.button{:href=>'http://awestruct.org'} View details &raquo; 
+    %a.button{:href=>'/jpa/'} More on Lambdamatic JPA

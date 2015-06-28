@@ -1,0 +1,5 @@
+= Lambdamatic JPA
+Emmanuel Bernard
+:awestruct-layout: single-page
+
+Stay tuned...

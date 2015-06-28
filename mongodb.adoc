@@ -1,0 +1,214 @@
+= Lambdamatic MongoDB
+Emmanuel Bernard
+:awestruct-layout: single-page
+
+Query MongoDB with Lambda Expressions.
+
+== Status
+
+Prototype (with its share of missing features and bugs)
+
+== Project Configuration
+
+In your `pom.xml`, add the following dependency:
+
+[source,xml]
+----
+<dependency>
+  <groupId>org.lambdamatic</groupId>
+  <artifactId>lambdamatic-mongodb-metadata-generator</artifactId>
+  <version>${version.dependency.lambdamatic-mongodb}</version>
+  <optional>true</optional>
+</dependency>
+----
+
+then, configure the following build plugins:
+
+[source,xml]
+----
+<plugin>
+  <artifactId>maven-compiler-plugin</artifactId>
+  <version>${version.plugin.compiler}</version>
+  <configuration>
+    <source>${maven.compiler.source}</source>
+    <target>${maven.compiler.target}</target>
+    <encoding>${project.build.sourceEncoding}</encoding>
+    <compilerArgument>-proc:none</compilerArgument>
+  </configuration>
+</plugin>
+<plugin>
+  <groupId>org.bsc.maven</groupId>
+  <artifactId>maven-processor-plugin</artifactId>
+  <version>3.1.0-beta1</version>
+  <executions>
+    <execution>
+      <id>process</id>
+      <goals>
+        <goal>process</goal>
+      </goals>
+      <phase>generate-sources</phase>
+    </execution>
+  </executions>
+</plugin>
+----
+
+== Querying Documents
+
+Once this is done, if you use Eclipse, you should install
+https://github.com/jbosstools/m2e-apt[the m2e-apt plugin] to let Eclipse invoke
+the Lambdamatic Annotation Processor each time a class annotated with `@Document`
+is saved.
+
+Once this is done, you can annotate your domain class with `@Document` and its
+fields with `@DocumentId`/`@DocumentField` as follow:
+
+[source,java]
+----
+package com.example.domain;
+
+@Document(collection="bikestations")
+public class BikeStation {
+
+  @DocumentId
+  private String id;
+
+  @DocumentField
+  private String stationName;
+
+  @DocumentField
+  private int availableDocks;
+
+  @DocumentField
+  private int totalDocks;
+
+  @DocumentField
+  private int availableBikes;
+
+  @DocumentField
+  private Location location;
+
+  @DocumentField
+  private BikeStationStatus status;
+
+  @DocumentField
+  private boolean testStation;
+
+  @DocumentField
+  private Date executionTime;
+
+  ...
+}
+----
+
+From the class above, the Lambdamatic's annotation processor will generate the following classes:
+
+- `com.example.domain.QBikeStation`
+- `com.example.domain.PBikeStation`
+- `com.example.domain.UBikeStation`
+- `com.example.domain.BikeStationCollection`
+- `com.example.domain.BikeStationCollectionProducer`
+
+These classes are located in the `target/generated-sources/apt` folder of your project.
+
+In your code, you can now write queries as follow to find all `BikeStation` that are `IN_SERVICE`:
+
+[source,java]
+----
+public List<BikeStation> findWithin(final List<Location> corners) {
+  return bikeStationCollection.filter(
+    s -> s.status == BikeStationStatus.IN_SERVICE
+      && s.location.geoWithin(corners)).toList();
+}
+----
+
+or even more interestingly, you can leverage MongoDB's geosearch capabilities to find
+all `BikeStation` that are `IN_SERVICE` and within an area:
+
+[source,java]
+----
+import org.lambdamatic.mongodb.types.geospatial.Location;
+...
+
+public List<BikeStation> findWithin(final Location[] corners) {
+  return bikeStationCollection.filter(
+      s -> s.status.equals(BikeStationStatus.IN_SERVICE)
+           && s.location.geoWithin(corners)).toList();
+}
+----
+
+
+See the https://github.com/lambdamatic/lambdamatic-mongodb-citibikesnyc[NYC Bikes sample application] for more details.
+
+=== Projections
+
+In some cases, you may not want to retrieve all the documents'fields from MongoDB,
+but just the ones you want to display in the UI. Lambdamatic supports `Projection`
+as well, using the following syntax:
+
+[source,java]
+----
+import org.lambdamatic.mongodb.types.geospatial.Location;
+import static org.lambdamatic.mongodb.Projection.include;
+...
+
+return bikeStationCollection.filter(s -> s.status.equals(BikeStationStatus.IN_SERVICE)
+    && s.location.geoWithin(corners))
+    .projection(s -> include(s.stationName, s.availableBikes, s.availableDocks))
+    .toList();
+----
+
+== Updating Documents
+
+=== Full replacement
+Lambdamatic supports 2 modes to update entities. The first one is the full-replacement mode:
+
+[source,java]
+----
+blogEntryCollection.replace(blogEntry);
+----
+
+In this case, the document whose `id` is the one given in `blogEntry` will be
+replaced with the given `blogEntry`.
+
+=== Partial replacement
+
+The second mode to update an existing document is by specifying the fields that need
+to be updated............................................................................
+
+[source,java]
+----
+Date now = new Date();
+blogEntryCollection.filter(e -> e.id.equals("1")).forEach(e -> {
+      e.lastUpdate = today;
+            e.commentsNumber++;
+            e.comments.push(comment);
+        });
+----
+ in the example above, the document in the `blogEntryCollection` whose `id` is `1`
+ will be updated in the following manner:
+
+ - `lastUpdate` field will be set to `now`,
+ - `commentsNumber` field will be incremented by `1`
+ - the given `comment` sub-document will be added in the array of `comments`
+
+
+== Installation/Build
+
+Lambdamatic is not available on Maven repositories, so you'll need to build it.
+Run
+
+[source]
+----
+mvn clean install
+----
+
+(requires a mongod instance running and listening on default port 27017)
+
+or
+
+[source]
+----
+mvn clean install -DskiptTests=true
+----
+
+if you don't want to run the tests

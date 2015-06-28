@@ -1,67 +1,67 @@
 ---
 layout: base
 ---
-.row
-  .large-12.columns
+.jumbotron
+  .container
     %h1 Lambdamatic
     %hr
-.row
-  .large-12.columns
-    .panel.radius
-      :asciidoc
-        == Write type-safe queries like Java 8 collection streams
+    :asciidoc
+      == Write type-safe queries like Java 8 collection streams
 
-        [source,java]
-        ----
-        List<Blog> = blogs
-          .filter( blog -> blog.status.equals(PUBLISHED) && blog.author.equals("Xavier") )
-          .toList();
-        ----
-  
-        Lambdamatic exposes databases as *collections of Java objects*.
-        Write *queries* like you write *stream operations* on Java 8 collections.
-        Define the predicates as condition on your actual object properties.
+      [source,java]
+      ----
+      List<Blog> = blogs
+        .filter( blog -> blog.status.equals(PUBLISHED) && blog.author.equals("Xavier") )
+        .toList();
+      ----
 
-        It does its magic by converting lambdas into an AST of predicates.
-        This AST is then converted into a database query.
+      Lambdamatic exposes databases as *collections of Java objects*.
+      Write *queries* like you write *stream operations* on Java 8 collections.
+      Define the predicates as condition on your actual object properties.
 
-        Lambdamatic comes in two incarnations: MongoDB and JPA.
-      .row
-        .large-8.large-offset-2.columns
-          %a.button{:href=>'#mongodb'} Explore Lambdamatic MongoDB
-          %a.button{:href=>'#jpa'} Explore Lambdamatic JPA
+      It does its magic by converting lambdas into an AST of predicates.
+      This AST is then converted into a database query.
 
-.odd
+      Lambdamatic comes in two incarnations: MongoDB and JPA.
+    .row
+      .col-md-4.text-center
+        %a.btn.btn-primary.btn-lg{:href=>'#mongodb'} Explore Lambdamatic MongoDB
+      .col-md-4.text-center
+        %a.btn.btn-primary.btn-lg{:href=>'#jpa'} Explore Lambdamatic JPA
+      .col-md-4.text-center
+        %a.btn.btn-success.btn-lg{:href=>'https://github.com/lambdamatic/lambdamatic-project'} Get the code on GitHub
+
+-# MongoDB
+.container
   .row
-    .large-12.columns
+    .col-sm-12.text-center
       #mongodb
+      %h2 Lambdamatic MongoDB
+  .row
+    .col-sm-6.lead
       :asciidoc
-        == Lambdamatic MongoDB
-
         Lambdamatic MongoDB is an *Object Mapper*.
         It exposes MongoDB collections as Java collections.
         Stream operations (filter, map, etc) are converted into server side MongoDB queries.
 
+        Lambdamatic MongoDB supports the following features:
+
+        * nested documents
+        * collection or arrays of nested documents
+        * geospatial queries
+        * ...
+    .col-sm-6
+      :asciidoc
         [source,java]
         ----
         class Blog
         @Document(collection="blogs")
         public class Blog {
-
-          @DocumentId
-          private String id;
-
-          @DocumentField
-          private String title;
-
-          @DocumentField
-          private String url;
-
-          @DocumentField
-          private Status status;
-
-          @DocumentField
-          private String author;
+          @DocumentId private String id;
+          @DocumentField private String title;
+          @DocumentField private String url;
+          @DocumentField private Status status;
+          @DocumentField private String author;
         }
 
         public enum Status {
@@ -71,30 +71,51 @@ layout: base
         }
 
         List<Blog> = blogs
-          .filter( blog -> blog.status.equals(PUBLISHED) && blog.author.equals("Xavier") )
+          .filter(
+            blog -> blog.status.equals(PUBLISHED)
+                    && blog.author.equals("Xavier")
+            )
           .toList();
         ----
+  .row
+    .col-xs-12.text-center
+      %a.btn.btn-primary{:href=>'/mongodb/'} More on Lambdamatic MongoDB
+  .row
+    .col-xs-12.text-center
+      %hr
+-# JPA
+.container
+  .row
+    .col-sm-12.text-center
+      #jpa
+      %h2 Lambdamatic JPA
+  .row
+    .col-sm-12.lead
+      :asciidoc
+        Lambdamatic JPA is a new way of writing JPA queries.
+        Write Java 8 stream-like *code* and let Lambdamatic JPA convert this code into JPA queries.
 
-        Lambdamatic MongoDB supports the following features:
+        [WARNING]
+        ====
+        this module is a work in progress.
+        The code is your friend at this stage.
+        ====
+  .row
+    .col-xs-12.text-center
+      %a.btn.btn-primary{:href=>'/jpa/'} More on Lambdamatic JPA
+  .row
+    .col-xs-12.text-center
+      %hr
 
-        * nested documents
-        * collection or arrays of nested documents
-        * geospatial queries
-        * ...
-      %a.button{:href=>'/mongodb/'} More on Lambdamatic MongoDB
-
-.row.even
-  .large-12.columns
-    :asciidoc
-      === Lambdamatic JPA
-
-      Lambdamatic JPA is a new way of writing JPA queries.
-      Write Java 8 stream-like *code* and let Lambdamatic JPA convert this code into JPA queries.
-
-      [WARNING]
-      ====
-      this module is a work in progress.
-      The code is your friend at this stage.
-      ====
-
-    %a.button{:href=>'/jpa/'} More on Lambdamatic JPA
+-# License
+.container
+  .row
+    .col-sm-12.text-center
+      #license
+      %h2 License
+    .col-sm.12
+      :asciidoc
+        :hide-uri-scheme:
+        This program is made available under the terms of the *Eclipse Public License v1.0*
+        which accompanies this distribution, and is available at
+        http://www.eclipse.org/legal/epl-v10.html

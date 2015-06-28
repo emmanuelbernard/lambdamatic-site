@@ -1,54 +1,51 @@
 !!!5
--# To understand why the html tag is setup this way,
--# see http://paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en"><![endif]-->
-<!--[if gt IE 8]><!--><html class="no-js" lang="en"><!--<![endif]-->
-%head
-  %meta(charset='utf-8')
-  %meta(name='viewport' content='width=device-width, initial-scale=1.0')
-  %title=site.title
-  %link{:rel=>'stylesheet', :href=>"#{site.base_url}/stylesheets/normalize.css"}
-  %link{:rel=>'stylesheet', :href=>"#{site.base_url}/stylesheets/app.css"}
-  %script(src="#{site.base_url}/javascripts/vendor/custom.modernizr.js")
-  %link{:rel=>'author', :type=>'text/plain', :href=>"#{site.base_url}/humans.txt"}
-%body.antialiased
-  %nav.top-bar
-    %ul.title-area
-      %li.name
-        %h1
-          %a(href="#{site.base_url}/")=site.name
-      %li.toggle-topbar.menu-icon
-        %a{:href=>'#'}<
-          %span
-    %section.top-bar-section
-      %ul.right
-        %li.divider
-          %li
-            %a{:href=>"#{site.base_url}/"} Home
-        -#%li.divider
-        -#  %li
-        -#    %a{:href=>"#{site.base_url}/blog"} Blog
-  ~ content
-  %footer.row(style='max-width: 100%')
-    %hr
-    .large-6.columns
-      %p(style='margin-bottom: .75em')
-        &copy; #{site.org} #{Date.today.year}
-    .large-6.columns
-      %ul.inline-list.right
-        %li
-          %a{:href=>"#{site.base_url}/"} Home
-        -#%li
-        -#  %a{:href=>"#{site.base_url}/blog"} Blog
-  %script
-    document.write('<script src=' + ('__proto__' in {} ? '#{site.base_url}/javascripts/vendor/zepto' : '#{site.base_url}/javascripts/vendor/jquery') + '.js><\/script>')
-  %script{:src=>"#{site.base_url}/javascripts/foundation/foundation.js"}
-  -# select foundation components from this array and add them to the one on the line below it
-  -# [:orbit, :cookie, :clearing, :magellan, :section, :alerts, :topbar, :joyride, :forms, :tooltips, :dropdown, :placeholder, :reveal]
-  - [:topbar].each do |component|
-    %script{:src=>"#{site.base_url}/javascripts/foundation/foundation.#{component}.js"}
-  %script
-    $(document).foundation()
-  - if site.google_analytics
-    =google_analytics_async
-</html>
+%html(lang='en')
+  %head
+    %meta(charset='utf-8')
+    %meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    %meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    - page_title = "#{page.title ? page.title : site.title}"
+    %title=page_title
+    %link{:rel=>'stylesheet', :href=>"#{site.base_url}/stylesheets/normalize.css"}
+    %link{:rel=>'stylesheet', :href=>"#{site.base_url}/stylesheets/flatly-bootstrap.min.css"}
+    %link{:rel=>'stylesheet', :href=>"#{site.base_url}/stylesheets/site-style.css"}
+    -# HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
+    -# WARNING: Respond.js doesn't work if you view the page via file://
+    <!--[if lt IE 9]> <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script> <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script> <![endif]-->
+  %body
+    .navbar.navbar-inverse
+      .navbar-header
+        %button(type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#navbar' aria-expanded='false' aria-controls='navbar')
+          %span.sr-only
+            Toggle naivgation
+          %span.icon-bar
+          %span.icon-bar
+          %span.icon-bar
+        %a.navbar-brand(href='/')
+          Lambdamatic
+      #navbar
+        .navbar-collapse.collapse
+          %ul.nav.navbar-nav
+            %li
+              %a(href='/')="Home"
+            %li
+              %a(href='/mongodb/')="MongoDB"
+            %li
+              %a(href='/jpa/')="JPA"
+          %ul.nav.navbar-nav.navbar-right
+            %li
+              %a(href='/news/')="News"
+            %li
+              %a(href='/license/')="License"
+    ~ content
+    %footer
+      .container
+        .row
+          .col-sm-6
+            Copyright (C) Xavier Coulon
+    -# jquery (necessary for bootstrap's javascript plugins)
+    %script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js")
+    -# include all compiled plugins (below), or include individual files as needed 
+    %script(src="#{site.base_url}/javascripts/bootstrap.min.js")
+    - if site.google_analytics
+      =google_analytics_async

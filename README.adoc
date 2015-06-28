@@ -1,0 +1,23 @@
+= Read me
+Emmanuel Bernard
+:awestruct-layout: single-page
+:toc:
+:toc-placement: preamble
+
+
+== Install and build the website
+
+TBD
+
+== Theme
+
+Theme copied from https://bootswatch.com/flatly/ and inspired by https://bootswatch.com/united/.
+Source of themes at https://bootswatch.com/.
+
+== License
+
+This site is licensed under a http://creativecommons.org/licenses/by-sa/4.0/[Creative Commons Attribution-ShareAlike 4.0 International License].
+Code samples are released under the http://apache.org/licenses/LICENSE-2.0[Apache Software License 2.0].
+
+By submitting a "pull request" or otherwise contributing to this repository, you
+agree to license your contribution under the respective licenses mentioned above.

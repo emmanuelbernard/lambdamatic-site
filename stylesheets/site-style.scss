@@ -1,6 +1,23 @@
+$inverse-color: #18bc9c;
+$primary-color: rgb(44, 62, 80);
+$third-color: #dd4814;
+
 footer {
-  background-color: #dd4814;
+  background-color: $third-color;
   color: #ffffff;
   padding-top: 2em;
   padding-bottom: 2em;
+}
+
+h1 {
+  color: $third-color;
+}
+
+.jumbotron {
+  color: #ffffff;
+  background-color: $third-color;
+}
+
+.post a {
+  color: $third-color;
 }

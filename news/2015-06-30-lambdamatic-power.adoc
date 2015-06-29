@@ -1,0 +1,5 @@
+= Where does Lambdamatic powers come from
+Xavier Coulon
+
+Lambdamatic powers come from taking a lambda and interpreting its bytecode.
+That sounds hairy, doesn't it? Let me tell you, it is!
